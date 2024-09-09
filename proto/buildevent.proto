@@ -1,0 +1,62 @@
+syntax = "proto3";
+package sage.buildevent;
+
+import "google/protobuf/empty.proto";
+
+service BuildEventSender {
+  rpc Send (BuildEvent) returns (google.protobuf.Empty);
+}
+
+
+message BuildEvent {
+  oneof event {
+    BuildStarted buildStarted = 1;
+    BuildFinished buildFinished =2;
+    TaskStarted taskStarted =3;
+    TaskFinished taskFinished =4;
+    TargetStarted targetStarted =5;
+    TargetFinished targetFinished =6;
+    MessageLogged messageLogged=7;
+  }
+}
+
+message BuildStarted {
+  Info info =1;
+}
+
+message BuildFinished {
+  Info info =1;
+  optional Exception exception =2;
+}
+message TaskStarted {
+  Info info =1;
+}
+
+message TaskFinished {
+  Info info =1;
+  optional Exception exception =2;
+}
+
+message TargetStarted {
+  Info info =1;
+}
+
+message TargetFinished {
+  Info info =1;
+  optional Exception exception =2;
+}
+
+message MessageLogged {
+  Info info =1;
+  optional Exception exception =2;
+}
+message Exception {
+  string message =1;
+  string stacktrace =2;
+}
+
+message Info {
+  string name =1;
+  optional  string description=2;
+}
+
